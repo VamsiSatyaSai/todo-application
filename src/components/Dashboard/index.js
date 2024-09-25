@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Link} from 'react-router-dom'
+import { Navigate } from "react-router-dom"; // Import Navigate for redirection
 import './index.css';  // Importing component-specific CSS
 
 class Dashboard extends Component {
@@ -7,6 +7,7 @@ class Dashboard extends Component {
     tasks: [],
     title: '',
     status: 'pending',
+    redirectToLogin: false,  // State to manage redirection on logout
   };
 
   componentDidMount() {
@@ -15,10 +16,11 @@ class Dashboard extends Component {
 
   fetchTasks = () => {
     const token = localStorage.getItem("token");
-    console.log(token)
     fetch("https://todo-application-backend-yrpf.onrender.com/api/tasks", {
-      headers: { "Content-Type": "application/json",
-        Authorization: `Bearer ${token}` }
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }
     })
       .then((response) => response.json())
       .then((data) => this.setState({ tasks: data }))
@@ -57,32 +59,25 @@ class Dashboard extends Component {
       .catch((error) => console.error("Error:", error));
   };
 
-  handleStatusChange = (taskId, newStatus) => {
-    const token = localStorage.getItem("token");
-  
-    fetch(`https://todo-application-backend-yrpf.onrender.com/api/tasks/update/${taskId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ status: newStatus }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to update task status');
-        }
-        return response.json();
-      })
-      .then(() => this.fetchTasks()) // Refetch tasks after updating
-      .catch((error) => console.error("Error:", error));
+  handleLogout = () => {
+    localStorage.removeItem("token");  // Remove JWT token
+    this.setState({ redirectToLogin: true });  // Redirect to login page
   };
 
   render() {
+    if (this.state.redirectToLogin) {
+      return <Navigate to="/" />;  // Redirect to login page after logout
+    }
+
     return (
       <div className="dashboard-container">
-        <div className="update-button"><Link to='/profile'><button>Update Profile</button></Link></div>
         <h2>Task Dashboard</h2>
+
+        {/* Logout Button */}
+        <button onClick={this.handleLogout} className="logout-btn">
+          Logout
+        </button>
+
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -99,16 +94,11 @@ class Dashboard extends Component {
           </select>
           <button type="submit">Add Task</button>
         </form>
+        
         <ul>
           {this.state.tasks.map((task) => (
             <li key={task.id}>
               {task.title} - {task.status}
-              <select value={task.status} onChange={(e) => this.handleStatusChange(task.id, e.target.value)}>
-                <option value="pending">Pending</option>
-                <option value="in progress">In Progress</option>
-                <option value="done">Done</option>
-                <option value="completed">Completed</option>
-              </select>
               <button className="delete-btn" onClick={() => this.handleDelete(task.id)}>Delete</button>
             </li>
           ))}
