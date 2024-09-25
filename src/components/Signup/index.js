@@ -18,7 +18,7 @@ class Signup extends Component {
     e.preventDefault();
     const { name, email, password } = this.state;
 
-    fetch("http://localhost:5000/api/auth/signup", {
+    fetch("https://todo-application-backend-yrpf.onrender.com/api/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
