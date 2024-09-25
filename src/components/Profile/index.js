@@ -18,7 +18,7 @@ class Profile extends Component {
   fetchProfile = () => {
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:5000/api/profile", {
+    fetch("https://todo-application-backend-yrpf.onrender.com/api/profile", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())
@@ -35,7 +35,7 @@ class Profile extends Component {
     const token = localStorage.getItem("token");
     const { name, email, password } = this.state;
 
-    fetch("http://localhost:5000/api/profile/update", {
+    fetch("https://todo-application-backend-yrpf.onrender.com/api/profile/update", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
