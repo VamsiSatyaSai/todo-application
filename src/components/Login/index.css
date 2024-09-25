@@ -1,0 +1,16 @@
+/* Login.css */
+.login-container {
+    padding: 20px;
+  }
+  
+  .login-container h2 {
+    color: #333;
+  }
+  
+  .login-container form input,
+  .login-container form button {
+    width: 100%;
+  }
+  .signup-button {
+    text-align: right;
+  }
