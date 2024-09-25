@@ -16,7 +16,7 @@ class Dashboard extends Component {
   fetchTasks = () => {
     const token = localStorage.getItem("token");
     console.log(token)
-    fetch("http://localhost:5000/api/tasks", {
+    fetch("https://todo-application-backend-yrpf.onrender.com/api/tasks", {
       headers: { "Content-Type": "application/json",
         Authorization: `Bearer ${token}` }
     })
@@ -34,7 +34,7 @@ class Dashboard extends Component {
     const { title, status } = this.state;
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:5000/api/tasks/create", {
+    fetch("https://todo-application-backend-yrpf.onrender.com/api/tasks/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +49,7 @@ class Dashboard extends Component {
   handleDelete = (taskId) => {
     const token = localStorage.getItem("token");
 
-    fetch(`http://localhost:5000/api/tasks/delete/${taskId}`, {
+    fetch(`https://todo-application-backend-yrpf.onrender.com/api/tasks/delete/${taskId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -60,7 +60,7 @@ class Dashboard extends Component {
   handleStatusChange = (taskId, newStatus) => {
     const token = localStorage.getItem("token");
   
-    fetch(`http://localhost:5000/api/tasks/update/${taskId}`, {
+    fetch(`https://todo-application-backend-yrpf.onrender.com/api/tasks/update/${taskId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
